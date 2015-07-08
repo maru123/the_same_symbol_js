@@ -14,7 +14,11 @@
     var setBtn = document.getElementById('set').addEventListener('click',function(){
       var memory = new Memory();
       console.log(memory.deal(3));
+      for(var i = 0; i<3; i++){
+        console.log(memory.isPairs(1,2)," : failedCount ",memory.failedCount)
+      }
     });
+
     </script>
   </body>
 </html>

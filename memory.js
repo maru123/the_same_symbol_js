@@ -1,5 +1,6 @@
 var Memory = function() {
   this.cards = [];
+  this.failedCount = 0;
 };
 Memory.prototype.deal = function (pairs) {
   for(var i = 1; i <= pairs; i++){
@@ -10,17 +11,14 @@ Memory.prototype.deal = function (pairs) {
 Memory.prototype.shuffle = function () {
   var cards = this.cards.concat();
   var shuffledCards = [];
-
   for (var i = 0; i < this.cards.length; i++) {
     var selectedCsrdIndex = Math.floor( Math.random() * cards.length );
     var selectedCsrd = cards[selectedCsrdIndex];
     shuffledCards.push(selectedCsrd);
     cards.splice(selectedCsrdIndex,1);
-    // console.log("----------------------")
-    // console.log(cards)
-    // console.log(selectedCsrdIndex)
-    // console.log(selectedCsrd)
-    // console.log(shuffledCards)
   }
   return shuffledCards;
+};
+Memory.prototype.isPairs = function (card,anotherCard) {
+  return (card == anotherCard) ? true : this.failedCount++,false;
 };
