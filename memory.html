@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Memory</title>
+  </head>
+  <body>
+    <h1 id="title">神経衰弱</h1>
+    <div id="memory">
+      <button type="button" id="set">SET</button>
+    </div>
+    <script type="text/javascript" src="./memory.js" charaset="UTF-8"></script>
+    <script type="text/javascript">
+    var setBtn = document.getElementById('set').addEventListener('click',function(){
+      var memory = new Memory();
+      console.log(memory.deal(3));
+    });
+    </script>
+  </body>
+</html>
