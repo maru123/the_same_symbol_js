@@ -7,18 +7,60 @@
   <body>
     <h1 id="title">神経衰弱</h1>
     <div id="memory">
+      <input id="entry-pairs" type="number" maxlength="4">
       <button type="button" id="set">SET</button>
+      <button type="button" id="reset" disabled>RESET</button>
+      <div id="cards"></div>
     </div>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="./memory.js" charaset="UTF-8"></script>
     <script type="text/javascript">
-    var setBtn = document.getElementById('set').addEventListener('click',function(){
+      setBtn = document.getElementById('set')
+      resetBtn = document.getElementById('reset')
       var memory = new Memory();
-      console.log(memory.deal(3));
-      for(var i = 0; i<3; i++){
-        console.log(memory.isPairs(1,2)," : failedCount ",memory.failedCount)
-      }
-    });
+      var openCard = null;
+      var openedCards = [];
 
+      setBtn.addEventListener('click',function(){
+        var pairs = document.getElementById("entry-pairs").value;
+        memory.deal(pairs);
+        setBtn.disabled = true;
+        resetBtn.disabled = false;
+      });
+      resetBtn.addEventListener('click',function(){
+        memory.cards = [];
+        memory.failedCount = 0;
+        var Cards = document.getElementById("cards");
+        for(var i = Cards.childNodes.length-1; i>=0; i--){
+          Cards.removeChild(Cards.childNodes[i]);
+        }
+        setBtn.disabled = false;
+        resetBtn.disabled = true;
+      });
+      function checkCards(){
+        openedCards.push(openCard);
+        if(openedCards.length == 2){
+          if(memory.isPairs(openedCards[0],openedCards[1])){
+            console.log("ok");
+          } else {
+            console.log("failedCount ",memory.failedCount)
+          };
+        openedCards = [];
+        };
+      };
+      // ---------------------------------
+      // jquery
+      // ---------------------------------
+      $(function(){
+        $("#cards").css("font-size","70px").css("border","double")
+      });
+      $(function(){
+        $(document).on("click","span",function(){
+          openCard = $(this).html();
+          $(this).css("color","red").css("background-color","white");
+          checkCards();
+        });
+      });
     </script>
   </body>
 </html>
