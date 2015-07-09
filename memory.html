@@ -5,7 +5,7 @@
     <title>Memory</title>
   </head>
   <body>
-    <h1 id="title">神経衰弱</h1>
+    <h1 id="title">Memory</h1>
     <div id="memory">
       <input id="entry-pairs" type="number" maxlength="4">
       <button type="button" id="set">SET</button>
@@ -57,7 +57,9 @@
       $(function(){
         $(document).on("click","span",function(){
           openCard = $(this).html();
-          $(this).css("color","red").css("background-color","white");
+          console.log(this)
+           //$(this).toggleClass("highlight");
+          $(this).css("color","red").css("background-color","white").css("border","double");
           checkCards();
         });
       });
