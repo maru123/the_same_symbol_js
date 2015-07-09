@@ -12,8 +12,8 @@
       <input id="entry-pairs" type="number" maxlength="4">
       <button type="button" id="set">SET</button>
       <button type="button" id="reset" disabled>RESET</button>
-      <div id="cards"></div>
     </div>
+        <div id="cards"></div>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="./memory.js" charaset="UTF-8"></script>
     <script type="text/javascript">
@@ -24,20 +24,19 @@
       var openedCards = [];
 
       setBtn.addEventListener('click',function(){
-        var pairs = document.getElementById("entry-pairs").value;
-        memory.deal(pairs);
+        memory.deal(document.getElementById("entry-pairs").value);
         setBtn.disabled = true;
         resetBtn.disabled = false;
       });
       resetBtn.addEventListener('click',function(){
         memory.cards = [];
         memory.failedCount = 0;
+        setBtn.disabled = false;
+        resetBtn.disabled = true;
         var Cards = document.getElementById("cards");
         for(var i = Cards.childNodes.length-1; i>=0; i--){
           Cards.removeChild(Cards.childNodes[i]);
         }
-        setBtn.disabled = false;
-        resetBtn.disabled = true;
       });
       function checkCards(){
         openedCards.push(openCard);

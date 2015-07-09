@@ -1,3 +1,6 @@
+// ---------------------------------
+// Memory
+// ---------------------------------
 var Memory = function(pairsCount) {
   this.cards = [];
   this.failedCount = 0;
@@ -32,6 +35,9 @@ Memory.prototype.shuffle = function () {
     this.createSpanElement(selectedCard,i);
   }
 };
+// ---------------------------------
+// Cards
+// ---------------------------------
 Memory.prototype.createSpanElement = function(card,i){
   var spanElements = document.createElement("span");
   console.log(spanElements)
