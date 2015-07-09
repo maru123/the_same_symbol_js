@@ -34,7 +34,9 @@ Memory.prototype.shuffle = function () {
 };
 Memory.prototype.createSpanElement = function(card,i){
   var spanElements = document.createElement("span");
+  console.log(spanElements)
   spanElements.id = "card"+i;
+  spanElements.classList.add("closedCard");
   spanElements.innerHTML = card;
   document.getElementById("cards").appendChild(spanElements);
 };

@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Memory</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+    <link rel="stylesheet" type="text/css" href="./memory.css">
   </head>
   <body>
     <h1 id="title">Memory</h1>
@@ -52,14 +54,10 @@
       // jquery
       // ---------------------------------
       $(function(){
-        $("#cards").css("font-size","70px").css("border","double")
-      });
-      $(function(){
         $(document).on("click","span",function(){
           openCard = $(this).html();
           console.log(this)
-           //$(this).toggleClass("highlight");
-          $(this).css("color","red").css("background-color","white").css("border","double");
+          $(this).toggleClass("openedCard");
           checkCards();
         });
       });
