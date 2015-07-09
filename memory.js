@@ -27,22 +27,28 @@ Memory.prototype.shuffle = function () {
   var shuffledCards = [];
   console.log(this.cards.length)
   for (var i = 0; i < this.cards.length; i++) {
-    var selectedCardIndex = Math.floor( Math.random() * cards.length );
+    var selectedCardIndex =Math.floor( Math.random() * cards.length );
     var selectedCard = cards[selectedCardIndex];
     shuffledCards.push(selectedCard);
     cards.splice(selectedCardIndex,1);
-    //add span elements.
-    this.createSpanElement(selectedCard,i);
   }
 };
 // ---------------------------------
-// Cards
+// Render
 // ---------------------------------
-Memory.prototype.createSpanElement = function(card,i){
-  var spanElements = document.createElement("span");
-  console.log(spanElements)
-  spanElements.id = "card"+i;
-  spanElements.classList.add("closedCard");
-  spanElements.innerHTML = card;
-  document.getElementById("cards").appendChild(spanElements);
+var Render = function () {
 };
+Render.prototype.createSpanElement = function(cards){
+  for(var i = 0;  i<cards.length; i++){
+    var spanElements = document.createElement("span");
+    spanElements.id = "card"+i;
+    spanElements.classList.add("closedCard");
+    spanElements.innerHTML = cards[i];
+    document.getElementById("cards").appendChild(spanElements);
+  }
+};
+Render.prototype.deleteSpanElement = function (cards) {
+  for(var i = cards.childNodes.length-1; i>=0; i--){
+    cards.removeChild(cards.childNodes[i]);
+  }
+}

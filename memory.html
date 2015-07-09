@@ -12,6 +12,7 @@
       <input id="entry-pairs" type="number" maxlength="4">
       <button type="button" id="set">SET</button>
       <button type="button" id="reset" disabled>RESET</button>
+      <p id="failed-count">failedCount</p>
     </div>
         <div id="cards"></div>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -20,6 +21,7 @@
       setBtn = document.getElementById('set')
       resetBtn = document.getElementById('reset')
       var memory = new Memory();
+      var render = new Render
       var openCard = null;
       var openedCards = [];
 
@@ -27,16 +29,14 @@
         memory.deal(document.getElementById("entry-pairs").value);
         setBtn.disabled = true;
         resetBtn.disabled = false;
+        render.createSpanElement(memory.cards);
       });
       resetBtn.addEventListener('click',function(){
         memory.cards = [];
         memory.failedCount = 0;
         setBtn.disabled = false;
         resetBtn.disabled = true;
-        var Cards = document.getElementById("cards");
-        for(var i = Cards.childNodes.length-1; i>=0; i--){
-          Cards.removeChild(Cards.childNodes[i]);
-        }
+        render.deleteSpanElement(document.getElementById("cards"));
       });
       function checkCards(){
         openedCards.push(openCard);
@@ -44,7 +44,7 @@
           if(memory.isPairs(openedCards[0],openedCards[1])){
             console.log("ok");
           } else {
-            console.log("failedCount ",memory.failedCount)
+            document.getElementById("failed-count").innerHTML = memory.failedCount;
           };
         openedCards = [];
         };
