@@ -8,23 +8,20 @@
   </head>
   <body>
     <h1 id="title">Memory</h1>
-    <div id="memory">
+    <div id="神経衰弱">
       <input id="entry-pairs" type="number" maxlength="4">
       <button type="button" id="set">SET</button>
       <button type="button" id="reset" disabled>RESET</button>
-      <p id="failed-count">failedCount</p>
+      <div>failedCount : <p id="failed-count"></p></div>
+      <div id="cards"></div>
     </div>
-        <div id="cards"></div>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="./memory.js" charaset="UTF-8"></script>
     <script type="text/javascript">
       setBtn = document.getElementById('set')
       resetBtn = document.getElementById('reset')
       var memory = new Memory();
-      var render = new Render
-      var openCard = null;
-      var openedCards = [];
-
+      var render = new Render();
       setBtn.addEventListener('click',function(){
         memory.deal(document.getElementById("entry-pairs").value);
         setBtn.disabled = true;
@@ -38,26 +35,11 @@
         resetBtn.disabled = true;
         render.deleteSpanElement(document.getElementById("cards"));
       });
-      function checkCards(){
-        openedCards.push(openCard);
-        if(openedCards.length == 2){
-          if(memory.isPairs(openedCards[0],openedCards[1])){
-            console.log("ok");
-          } else {
-            document.getElementById("failed-count").innerHTML = memory.failedCount;
-          };
-        openedCards = [];
-        };
-      };
-      // ---------------------------------
-      // jquery
-      // ---------------------------------
+      // choice card
       $(function(){
         $(document).on("click","span",function(){
-          openCard = $(this).html();
-          console.log(this)
           $(this).toggleClass("openedCard");
-          checkCards();
+          render.checkCards($(this).html(),this.id);
         });
       });
     </script>

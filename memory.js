@@ -11,14 +11,6 @@ Memory.prototype.deal = function (pairsCount) {
   }
   this.shuffle();
 };
-Memory.prototype.isPairs = function (card,anotherCard) {
-  if(card === anotherCard){
-    return true;
-  } else {
-    this.failedCount++;
-    return false;
-  };
-};
 // ---------------------------------
 // praivate
 // ---------------------------------
@@ -32,11 +24,13 @@ Memory.prototype.shuffle = function () {
     shuffledCards.push(selectedCard);
     cards.splice(selectedCardIndex,1);
   }
+  this.cards = shuffledCards;
 };
 // ---------------------------------
 // Render
 // ---------------------------------
 var Render = function () {
+  this.coicedCards = [];
 };
 Render.prototype.createSpanElement = function(cards){
   for(var i = 0;  i<cards.length; i++){
@@ -52,3 +46,20 @@ Render.prototype.deleteSpanElement = function (cards) {
     cards.removeChild(cards.childNodes[i]);
   }
 }
+Render.prototype.closeCards = function(cardId,anotherCardId){
+  document.getElementById("failed-count").innerHTML = memory.failedCount;
+  document.getElementById(cardId).className = "closedCard";
+  document.getElementById(anotherCardId).className = "closedCard";
+};
+
+Render.prototype.checkCards = function(value,id){
+  this.coicedCards.push(value,id);
+  console.log(value,id)
+  if(this.coicedCards.length === 6){
+    if(this.coicedCards[0] !== this.coicedCards[2]){
+      this.failedCount++;
+      render.closeCards(this.coicedCards[1],this.coicedCards[3]);
+    };
+  this.coicedCards.splice(0,4);
+  };
+};
