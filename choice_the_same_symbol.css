@@ -3,12 +3,12 @@ span{
   padding: 10px;
   font-size: 70px;
 }
-.closedSymbol{
+.closed {
   color: black;
   background-color: black;
   border: duble;
 }
-.openedSymbol{
+.opened {
   color: red;
   background-color: white;
   border: double;

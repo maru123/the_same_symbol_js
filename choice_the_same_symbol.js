@@ -1,11 +1,62 @@
-var ChoiceTheSameSymbol = function(setCount) {
+var ChoiceTheSameSymbol = function() {};
+ChoiceTheSameSymbol.prototype.reset = function (pairsCount) {
+  this.isFirst = true;
+  this.pair = [];
+  this.failedCount = 0;
   this.symbols = [];
-};
-ChoiceTheSameSymbol.prototype.set = function (setCount) {
-  for(var i = 1; i <= setCount; i++){this.symbols.push(i,i);}
+  for (var i = 1, j = 1; i <= pairsCount; i++, j++) {
+    this.symbols.push(new Symbol(j, i));
+    this.symbols.push(new Symbol((j+=1), i));
+  }
   this.shuffle();
 };
-// praivate
+ChoiceTheSameSymbol.prototype.choice = function(id){
+  var symbol = this.symbols.filter(function(sym){ return sym.id == id && sym.isAvailable })[0];
+  // 選べないカードを指定した時
+  if (symbol == undefined) return this.showMessage("It's not available.");
+
+  if (this.isFirst) {
+    // 1回目
+    this.pair.push(symbol);
+    this.isFirst = false;
+  } else {
+    // 2回目
+    this.pair.push(symbol);
+    this.checkPair();
+    this.isFirst = true;
+  }
+};
+ChoiceTheSameSymbol.prototype.checkPair = function(){
+  if (this.isWin()) {
+    this.win();
+  } else {
+    this.lose();
+  }
+  return this.pair = [];
+};
+ChoiceTheSameSymbol.prototype.isWin = function() {
+  return this.pair[0].value == this.pair[1].value;
+};
+ChoiceTheSameSymbol.prototype.win = function(){
+  this.discardPair();
+  if (this.isSymbolsAvailable()) return this.showMessage('Conglatulation!!!!');
+  return this.showMessage('Good Choice!!');
+};
+ChoiceTheSameSymbol.prototype.lose = function(){
+  return this.showMessage('Bad!!');
+};
+ChoiceTheSameSymbol.prototype.isSymbolsAvailable = function(){
+  return this.symbols.filter(function(sym){ return sym.isAvailable }).length == 0;
+};
+ChoiceTheSameSymbol.prototype.discardPair = function() {
+  this.pair[0].discard();
+  this.pair[1].discard();
+  return true;
+};
+ChoiceTheSameSymbol.prototype.showMessage = function(msg) {
+  return console.log(msg);
+};
+// private
 ChoiceTheSameSymbol.prototype.shuffle = function () {
   var symbols = this.symbols.concat();
   var shuffledsymbols = [];
@@ -17,30 +68,37 @@ ChoiceTheSameSymbol.prototype.shuffle = function () {
   }
   this.symbols = shuffledsymbols;
 };
-ChoiceTheSameSymbol.prototype.isSameSymbol = function (choicedFirst,choicedSecond) {
-  if(choicedFirst === choicedSecond)  return true;
+;
+
+var Symbol = function(id, value){
+  this.id = id;
+  this.value = value;
+  this.isAvailable = true;
 };
-ChoiceTheSameSymbol.prototype.reset = function () {
-  this.symbols = [];
+Symbol.prototype.discard = function(){
+  this.isAvailable = false;
 };
+
 // ---------------------------------
-// Render
+// SymbolElement
 // ---------------------------------
-var Render = function () {};
-Render.prototype.createSpanElement = function(symbols){
-  for(var i = 0;  i<symbols.length; i++){
-    var spanElements = document.createElement("span");
-    spanElements.id = "symbol"+i;
-    spanElements.classList.add("closedSymbol");
-    spanElements.innerHTML = symbols[i];
-    document.getElementById("symbols").appendChild(spanElements);
-  }
-};
-Render.prototype.deleteSpanElement = function (symbols) {
-  for(var i = symbols.childNodes.length-1; i>=0; i--){
-    symbols.removeChild(symbols.childNodes[i]);
-  }
-}
-Render.prototype.closeSymbols = function(Id){
-  document.getElementById(Id).className = "closedSymbol";
-};
+// var SymbolElement = function (stage) {
+//   this.stage = stage;
+// };
+// SymbolElement.prototype.add = function(symbols){
+//   for(var i = 0;  i < symbols.length; i++){
+//     var spanElements = document.createElement("span");
+//     spanElements.id = "symbol"+i;
+//     spanElements.classList.add("closed");
+//     spanElements.innerHTML = symbols[i];
+//     this.stage.appendChild(spanElements);
+//   }
+// };
+// SymbolElement.prototype.remove = function () {
+//   for(var i = this.stage.childNodes.length-1; i>=0; i--){
+//     this.stage.removeChild(this.stage.childNodes[i]);
+//   }
+// }
+// SymbolElement.prototype.close = function(Id){
+//   document.getElementById(Id).className = "closed";
+// };
