@@ -1,7 +1,6 @@
-var ChoiceTheSameSymbol = function(setCount) {
+var ChoiceTheSameSymbol = function() {};
+ChoiceTheSameSymbol.prototype.reset = function (setCount) {
   this.symbols = [];
-};
-ChoiceTheSameSymbol.prototype.set = function (setCount) {
   for(var i = 1; i <= setCount; i++){this.symbols.push(i,i);}
   this.shuffle();
 };
@@ -17,12 +16,7 @@ ChoiceTheSameSymbol.prototype.shuffle = function () {
   }
   this.symbols = shuffledsymbols;
 };
-ChoiceTheSameSymbol.prototype.isSameSymbol = function (choicedFirst,choicedSecond) {
-  if(choicedFirst === choicedSecond)  return true;
-};
-ChoiceTheSameSymbol.prototype.reset = function () {
-  this.symbols = [];
-};
+
 // ---------------------------------
 // Render
 // ---------------------------------

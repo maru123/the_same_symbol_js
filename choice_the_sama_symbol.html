@@ -11,8 +11,7 @@
     <div id="game">
       <p>神経衰弱ゲームのペア数を入力してください。</p>
       <input id="entry-set-count" type="number" maxlength="4"></input>
-      <button type="button" id="set">SET</button>
-      <button type="button" id="reset" disabled>RESET</button>
+      <button type="button" id="reset">RESET</button>
       <div>failedCount : <p id="failed-count"></p></div>
       <div id="symbols"></div>
     </div>
@@ -21,7 +20,6 @@
     <script type="text/javascript">
     var GameComponent = function(){
       this.entrySetCount = document.getElementById("entry-set-count")
-      this.setBtn = document.getElementById('set');
       this.resetBtn = document.getElementById('reset');
       this.failedCount = document.getElementById("failed-count");
       this.symbols = document.getElementById("symbols");
@@ -31,28 +29,21 @@
       this.count = 0;
       this.addEvent();
     };
-    GameComponent.prototype.set = function(){
-      this.choiceTheSameSymbol.set(this.entrySetCount.value);
-      this.render.createSpanElement(this.choiceTheSameSymbol.symbols);
-      this.setBtn.disabled = true;
-      this.resetBtn.disabled = false;
-    };
     GameComponent.prototype.reset = function(){
-      this.choiceTheSameSymbol.reset();
-      this.choices = [];
-      this.count = 0;
       this.render.deleteSpanElement(this.symbols);
-      this.setBtn.disabled = false;
       this.resetBtn.disabled = true;
       this.failedCount.innerHTML = 0;
+      this.choiceTheSameSymbol.reset(this.entrySetCount.value);
+      this.render.createSpanElement(this.choiceTheSameSymbol.symbols);
+      this.choices = [];
+      this.count = 0;
     };
     GameComponent.prototype.addEvent = function(){
-      this.setBtn.addEventListener('click', this.set.bind(this));
       this.resetBtn.addEventListener('click', this.reset.bind(this));
     };
     GameComponent.prototype.checkChoices = function(id,value){
       this.choices.push({index:id,symbol:value});
-      console.log("choices.length:",this.choices.length)
+
       if(this.choices.length >= 2){
         if(this.choices[0].symbol === this.choices[1].symbol){
           this.choices.splice(0,2);
