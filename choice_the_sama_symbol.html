@@ -10,10 +10,10 @@
     <h1 id="title">ChoiceTheSameSymbol</h1>
     <div id="game">
       <p>神経衰弱ゲームのペア数を入力してください。</p>
-      <input id="entry-set-count" type="number" maxlength="4"></input>
+      <input id="entry-set-count" type="number" maxlength="4" value="3"></input>
       <button type="button" id="reset">RESET</button>
       <div>failedCount : <p id="failed-count"></p></div>
-      <div id="symbols"></div>
+      <div id="stage"></div>
     </div>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="./choice_the_same_symbol.js" charaset="UTF-8"></script>
@@ -22,19 +22,19 @@
       this.entrySetCount = document.getElementById("entry-set-count")
       this.resetBtn = document.getElementById('reset');
       this.failedCount = document.getElementById("failed-count");
-      this.symbols = document.getElementById("symbols");
+      this.stage = document.getElementById("stage");
       this.choiceTheSameSymbol = new ChoiceTheSameSymbol();
-      this.render = new Render();
+      this.symbolElement = new SymbolElement(stage);
       this.choices = [];
       this.count = 0;
       this.addEvent();
     };
     GameComponent.prototype.reset = function(){
-      this.render.deleteSpanElement(this.symbols);
+      this.symbolElement.deleteSpanElement(this.stage);
       this.resetBtn.disabled = true;
       this.failedCount.innerHTML = 0;
       this.choiceTheSameSymbol.reset(this.entrySetCount.value);
-      this.render.createSpanElement(this.choiceTheSameSymbol.symbols);
+      this.symbolElement.createSpanElement(this.choiceTheSameSymbol.symbols);
       this.choices = [];
       this.count = 0;
     };
@@ -49,8 +49,8 @@
           this.choices.splice(0,2);
         } else {
           if(this.choices.length === 3){
-              this.render.closeSymbols(this.choices[0].index);
-              this.render.closeSymbols(this.choices[1].index);
+              this.symbolElement.closeSymbols(this.choices[0].index);
+              this.symbolElement.closeSymbols(this.choices[1].index);
               this.count++;
               this.failedCount.innerHTML = this.count;
               this.choices.splice(0,2);
@@ -60,8 +60,8 @@
     };
     $(function(){
       $(document).on("click","span",function(){
-        if (this.className.indexOf("openedSymbol") != -1) return true;
-        $(this).addClass("openedSymbol");
+        if (this.className.indexOf("opened") != -1) return true;
+        $(this).addClass("opened");
         gameComponent.checkChoices(this.id,$(this).html());
       });
     });

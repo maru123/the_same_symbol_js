@@ -18,23 +18,25 @@ ChoiceTheSameSymbol.prototype.shuffle = function () {
 };
 
 // ---------------------------------
-// Render
+// SymbolElement
 // ---------------------------------
-var Render = function () {};
-Render.prototype.createSpanElement = function(symbols){
-  for(var i = 0;  i<symbols.length; i++){
+var SymbolElement = function (stage) {
+  this.stage = stage;
+};
+SymbolElement.prototype.createSpanElement = function(symbols){
+  for(var i = 0;  i < symbols.length; i++){
     var spanElements = document.createElement("span");
     spanElements.id = "symbol"+i;
-    spanElements.classList.add("closedSymbol");
+    spanElements.classList.add("closed");
     spanElements.innerHTML = symbols[i];
-    document.getElementById("symbols").appendChild(spanElements);
+    this.stage.appendChild(spanElements);
   }
 };
-Render.prototype.deleteSpanElement = function (symbols) {
+SymbolElement.prototype.deleteSpanElement = function (symbols) {
   for(var i = symbols.childNodes.length-1; i>=0; i--){
     symbols.removeChild(symbols.childNodes[i]);
   }
 }
-Render.prototype.closeSymbols = function(Id){
-  document.getElementById(Id).className = "closedSymbol";
+SymbolElement.prototype.closeSymbols = function(Id){
+  document.getElementById(Id).className = "closed";
 };
