@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>ChoiceTheSameSymbol</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+    <link rel="stylesheet" type="text/css" href="./choice_the_same_symbol.css">
+  </head>
+  <body>
+    <h1 id="title">ChoiceTheSameSymbol</h1>
+    <div id="game">
+      <p>神経衰弱ゲームのセット数を入力してください。</p>
+      <input id="entry-set-count" type="number" maxlength="4"></input>
+      <button type="button" id="set">SET</button>
+      <button type="button" id="reset" disabled>RESET</button>
+      <div>failedCount : <p id="failed-count"></p></div>
+      <div id="symbols"></div>
+    </div>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="./choice_the_same_symbol.js" charaset="UTF-8"></script>
+    <script type="text/javascript">
+    var GameComponent = function(){
+      this.entrySetCount = document.getElementById("entry-set-count")
+      this.setBtn = document.getElementById('set');
+      this.resetBtn = document.getElementById('reset');
+      this.failedCount = document.getElementById("failed-count");
+      this.symbols = document.getElementById("symbols");
+      this.choiceTheSameSymbol = new ChoiceTheSameSymbol();
+      this.render = new Render();
+      this.choice = new Choice();
+      this.addEvent();
+    };
+    GameComponent.prototype.set = function(){
+      this.choiceTheSameSymbol.set(this.entrySetCount.value);
+      this.render.createSpanElement(this.choiceTheSameSymbol.symbols);
+      this.setBtn.disabled = true;
+      this.resetBtn.disabled = false;
+    };
+    GameComponent.prototype.reset = function(){
+      this.choiceTheSameSymbol.reset();
+      this.choice.reset();
+      this.render.deleteSpanElement(this.symbols);
+      this.setBtn.disabled = false;
+      this.resetBtn.disabled = true;
+      this.failedCount.innerHTML = 0;
+    };
+    GameComponent.prototype.addEvent = function(){
+      this.setBtn.addEventListener('click', this.set.bind(this));
+      this.resetBtn.addEventListener('click', this.reset.bind(this));
+    };
+    $(function(){
+      $(document).on("click","span",function(){
+        $(this).addClass("openedSymbol");
+        choice.checkSymbols($(this).html(),this.id);
+      });
+    });
+    var gameComponent = new GameComponent();
+    </script>
+  </body>
+</html>
