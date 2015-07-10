@@ -33,7 +33,15 @@
       this.choiceTheSameSymbol.reset(this.entrySetCount.value);
       this.symbolElement.add(this.choiceTheSameSymbol.symbols);
       this.choices = [];
-
+      this.addEvent();
+    };
+    GameComponent.prototype.addEvent = function(){
+      var self = this;
+      $(document).on("click","span",function(){
+        if (this.className.indexOf("opened") != -1) return true;
+        $(this).addClass("opened");
+        self.checkChoices(this.id,$(this).html());
+      });
     };
     GameComponent.prototype.checkChoices = function(id,value){
       this.choices.push({index:id,symbol:value});
@@ -52,13 +60,7 @@
         };
       };
     };
-    $(function(){
-      $(document).on("click","span",function(){
-        if (this.className.indexOf("opened") != -1) return true;
-        $(this).addClass("opened");
-        gameComponent.checkChoices(this.id,$(this).html());
-      });
-    });
+
     var gameComponent = new GameComponent();
     </script>
   </body>
