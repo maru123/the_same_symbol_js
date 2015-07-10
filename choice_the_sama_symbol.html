@@ -69,6 +69,7 @@
     };
     $(function(){
       $(document).on("click","span",function(){
+        if (this.className.indexOf("openedSymbol") != -1) return true;
         $(this).addClass("openedSymbol");
         gameComponent.checkChoices(this.id,$(this).html());
       });
