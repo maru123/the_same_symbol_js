@@ -44,32 +44,3 @@ Render.prototype.deleteSpanElement = function (symbols) {
 Render.prototype.closeSymbols = function(Id){
   document.getElementById(Id).className = "closedSymbol";
 };
-// ---------------------------------
-// Choice
-// ---------------------------------
-var Choice = function () {
-  this.Symbols = [];
-  this.failCounter = 0;
-}
-Choice.prototype.checkSymbols = function(value,id){
-  this.Symbols.push({index:id,symbol:value});
-  console.log(this.Symbols.length)
-  if(this.Symbols.length >= 2){
-    if(this.choiceTheSameSymbol.isSameSymbol(this.Symbols[0].symbol,this.Symbols[1].symbol)){
-      this.Symbols.splice(0,2);
-    } else {
-      if(this.Symbols.length === 3) this.fail();
-    };
-  };
-};
-Choice.prototype.fail = function(){
-  this.render.closeSymbols(this.Symbols[0].index);
-  this.render.closeSymbols(this.Symbols[2].index);
-  this.failCounter++;
-  this.failedCount.innerHTML = this.failCounter;
-  this.Symbols.splice(0,2);
-};
-Choice.prototype.reset = function () {
-  this.Symbols = [];
-  this.failCounter = 0;
-}
