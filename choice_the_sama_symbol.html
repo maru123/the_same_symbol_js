@@ -20,25 +20,22 @@
     <script type="text/javascript">
     var GameComponent = function(){
       this.entrySetCount = document.getElementById("entry-set-count")
-      this.resetBtn = document.getElementById('reset');
-      this.failedCount = document.getElementById("failed-count");
+      this.failedCountElement = document.getElementById("failed-count");
       this.stage = document.getElementById("stage");
+
       this.choiceTheSameSymbol = new ChoiceTheSameSymbol();
       this.symbolElement = new SymbolElement(stage);
       this.choices = [];
-      this.count = 0;
-      this.addEvent();
+      this.failedCount = 0;
+      document.getElementById('reset').addEventListener('click', this.reset.bind(this));
     };
     GameComponent.prototype.reset = function(){
       this.symbolElement.remove();
-      this.failedCount.innerHTML = 0;
+      this.failedCountElement.innerHTML = 0;
       this.choiceTheSameSymbol.reset(this.entrySetCount.value);
       this.symbolElement.add(this.choiceTheSameSymbol.symbols);
       this.choices = [];
-      this.count = 0;
-    };
-    GameComponent.prototype.addEvent = function(){
-      this.resetBtn.addEventListener('click', this.reset.bind(this));
+      this.failedCount = 0;
     };
     GameComponent.prototype.checkChoices = function(id,value){
       this.choices.push({index:id,symbol:value});
@@ -50,8 +47,8 @@
           if(this.choices.length === 3){
               this.symbolElement.close(this.choices[0].index);
               this.symbolElement.close(this.choices[1].index);
-              this.count++;
-              this.failedCount.innerHTML = this.count;
+              this.failedCount++;
+              this.failedCountElement.innerHTML = this.failedCount;
               this.choices.splice(0,2);
           }
         };
