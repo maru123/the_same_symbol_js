@@ -1,5 +1,6 @@
 var ChoiceTheSameSymbol = function() {};
 ChoiceTheSameSymbol.prototype.reset = function (setCount) {
+  this.failedCount = 0;
   this.symbols = [];
   for(var i = 1; i <= setCount; i++){this.symbols.push(i,i);}
   this.shuffle();

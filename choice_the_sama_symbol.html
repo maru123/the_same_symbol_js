@@ -22,11 +22,9 @@
       this.entrySetCount = document.getElementById("entry-set-count")
       this.failedCountElement = document.getElementById("failed-count");
       this.stage = document.getElementById("stage");
-
       this.choiceTheSameSymbol = new ChoiceTheSameSymbol();
       this.symbolElement = new SymbolElement(stage);
-      this.choices = [];
-      this.failedCount = 0;
+
       document.getElementById('reset').addEventListener('click', this.reset.bind(this));
     };
     GameComponent.prototype.reset = function(){
@@ -35,7 +33,7 @@
       this.choiceTheSameSymbol.reset(this.entrySetCount.value);
       this.symbolElement.add(this.choiceTheSameSymbol.symbols);
       this.choices = [];
-      this.failedCount = 0;
+
     };
     GameComponent.prototype.checkChoices = function(id,value){
       this.choices.push({index:id,symbol:value});
@@ -47,8 +45,8 @@
           if(this.choices.length === 3){
               this.symbolElement.close(this.choices[0].index);
               this.symbolElement.close(this.choices[1].index);
-              this.failedCount++;
-              this.failedCountElement.innerHTML = this.failedCount;
+              this.choiceTheSameSymbol.failedCount++;
+              this.failedCountElement.innerHTML =this.choiceTheSameSymbol.failedCount++;
               this.choices.splice(0,2);
           }
         };
