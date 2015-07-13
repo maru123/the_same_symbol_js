@@ -22,14 +22,14 @@
       this.failedCountElement = document.getElementById("failed-count");
       this.stage = document.getElementById("stage");
       this.choiceTheSameSymbol = new ChoiceTheSameSymbol();
-      this.symbolElements = new SymbolElements(stage);
+      this.symbolElement = new SymbolElement(stage);
       document.getElementById('reset').addEventListener('click', this.reset.bind(this));
     };
     GameComponent.prototype.reset = function(){
-      this.symbolElements.remove();
+      this.symbolElement.remove();
       this.failedCountElement.innerHTML = 0;
       this.choiceTheSameSymbol.reset(this.entrySetCount.value);
-      this.symbolElements.add(this.choiceTheSameSymbol.symbols);
+      this.symbolElement.add(this.choiceTheSameSymbol.symbols);
       this.choicedIds = [];
       this.addEvent();
     };
@@ -54,8 +54,8 @@
       var result = this.choiceTheSameSymbol.choice(id);
       //戻り値がfalse(pair不成立)のとき、かつ３枚目のカードクリック時に、直前の２枚を閉じる
       if ( result === undefined && this.choicedIds.length === 3 ){
-        this.symbolElements.close(this.choicedIds[0]);
-        this.symbolElements.close(this.choicedIds[1]);
+        this.symbolElement.close(this.choicedIds[0]);
+        this.symbolElement.close(this.choicedIds[1]);
         this.choicedIds.splice(0,2);
         this.failedCountElement.innerHTML = this.choiceTheSameSymbol.failedCount;
       }

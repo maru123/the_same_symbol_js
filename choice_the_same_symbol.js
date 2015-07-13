@@ -85,12 +85,12 @@ Symbol.prototype.discard = function(){
   this.isAvailable = false;
 };
 // ---------------------------------
-// SymbolElements
+// SymbolElement
 // ---------------------------------
-var SymbolElements = function (stage) {
+var SymbolElement = function (stage) {
   this.stage = stage;
 };
-SymbolElements.prototype.add = function(symbols){
+SymbolElement.prototype.add = function(symbols){
   for(var i = 0;  i < symbols.length; i++){
     var spanElements = document.createElement("span");
     spanElements.id = symbols[i].id;
@@ -99,11 +99,11 @@ SymbolElements.prototype.add = function(symbols){
     this.stage.appendChild(spanElements);
   }
 };
-SymbolElements.prototype.remove = function () {
+SymbolElement.prototype.remove = function () {
   for(var i = this.stage.childNodes.length-1; i>=0; i--){
     this.stage.removeChild(this.stage.childNodes[i]);
   }
 }
-SymbolElements.prototype.close = function(Id){
+SymbolElement.prototype.close = function(Id){
   document.getElementById(Id).className = "closed";
 };
