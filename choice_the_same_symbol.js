@@ -14,7 +14,6 @@ ChoiceTheSameSymbol.prototype.choice = function(id){
   var symbol = this.symbols.filter(function(sym){ return sym.id == id && sym.isAvailable })[0];
   // 選べないカードを指定した時
   if (symbol == undefined)  return false;//this.showMessage("It's not available.")
-
   if (this.isFirst) {
     // 1回目
     this.pair.push(symbol);
@@ -87,7 +86,7 @@ var SymbolElement = function (stage) {
 SymbolElement.prototype.add = function(symbols){
   for(var i = 0;  i < symbols.length; i++){
     var spanElements = document.createElement("span");
-    spanElements.id = "symbol" + symbols[i].id;
+    spanElements.id = symbols[i].id;
     spanElements.classList.add("closed");
     spanElements.innerHTML = symbols[i].value;
     this.stage.appendChild(spanElements);

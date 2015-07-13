@@ -40,7 +40,7 @@
       $(document).on("click","span",function(){
         if (this.className.indexOf("opened") != -1) return true;
         $(this).addClass("opened");
-        self.checkChoices(this.id,$(this).html());
+        self.choiceTheSameSymbol.choice(this.id);
       });
     };
     var gameComponent = new GameComponent();
