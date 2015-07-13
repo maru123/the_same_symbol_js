@@ -26,16 +26,15 @@ ChoiceTheSameSymbol.prototype.choice = function(id){
   }
 };
 ChoiceTheSameSymbol.prototype.checkPair = function(){
-  var result;
   if (this.isWin()) {
     this.win();
-    result = true;
+    this.clearPair();
+    return true;
   } else {
     this.lose();
-    result = false;
+    this.clearPair();
+    return false;
   }
-  this.pair = [];
-  return result;
 };
 ChoiceTheSameSymbol.prototype.isWin = function() {
   return this.pair[0].value == this.pair[1].value;
@@ -55,6 +54,10 @@ ChoiceTheSameSymbol.prototype.isSymbolsAvailable = function(){
 ChoiceTheSameSymbol.prototype.discardPair = function() {
   this.pair[0].discard();
   this.pair[1].discard();
+  return true;
+};
+ChoiceTheSameSymbol.prototype.clearPair = function() {
+  this.pair = [];
   return true;
 };
 ChoiceTheSameSymbol.prototype.showMessage = function(msg) {

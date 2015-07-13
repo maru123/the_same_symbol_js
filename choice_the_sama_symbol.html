@@ -43,20 +43,24 @@
         $(this).addClass("opened");
         //カードのidを取得する
         self.choicedId.push(this.id);
-        //choiceTheSameSymbol.choiceを実行する
-        var result = self.choiceTheSameSymbol.choice(this.id);
-        //choiceTheSameSymbol.choiceの戻り値がfalseのとき、カードを閉じる
-        if ( result === undefined && self.choicedId.length === 3 ){
-          self.symbolElement.close(self.choicedId[0]);
-          self.symbolElement.close(self.choicedId[1]);
-          self.choicedId.splice(0,2);
-          self.failedCountElement.innerHTML = self.choiceTheSameSymbol.failedCount;
-        }
-        //choiceTheSameSymbol.choiceの戻り値がtrueのとき
-        if (result === true ){
-          self.choicedId = [];
-        };
+        //choiceメソッドを実行
+        self.choice(this.id);
       });
+    };
+    GameComponent.prototype.choice = function(id){
+      //choiceTheSameSymbol.choiceを実行する
+      var result = this.choiceTheSameSymbol.choice(id);
+      //choiceTheSameSymbol.choiceの戻り値がfalse(pair不成立)のとき、カードを閉じる
+      if ( result === undefined && this.choicedId.length === 3 ){
+        this.symbolElement.close(this.choicedId[0]);
+        this.symbolElement.close(this.choicedId[1]);
+        this.choicedId.splice(0,2);
+        this.failedCountElement.innerHTML = this.choiceTheSameSymbol.failedCount;
+      }
+      //choiceTheSameSymbol.choiceの戻り値がtrue(pair成立)のとき
+      if (result === true ){
+        this.choicedId = [];
+      };
     };
     var gameComponent = new GameComponent();
     </script>
