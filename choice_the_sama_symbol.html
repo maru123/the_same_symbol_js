@@ -23,43 +23,46 @@
       this.failedCountElement = document.getElementById("failed-count");
       this.stage = document.getElementById("stage");
       this.choiceTheSameSymbol = new ChoiceTheSameSymbol();
-      this.symbolElement = new SymbolElement(stage);
+      this.symbolElements = new SymbolElements(stage);
       document.getElementById('reset').addEventListener('click', this.reset.bind(this));
     };
     GameComponent.prototype.reset = function(){
-      this.symbolElement.remove();
+      this.symbolElements.remove();
       this.failedCountElement.innerHTML = 0;
       this.choiceTheSameSymbol.reset(this.entrySetCount.value);
-      this.symbolElement.add(this.choiceTheSameSymbol.symbols);
-      this.choicedId = [];
+      this.symbolElements.add(this.choiceTheSameSymbol.symbols);
+      this.choicedIds = [];
       this.addEvent();
     };
     GameComponent.prototype.addEvent = function(){
+      var spans = document.getElementsByClassName('closed');
       var self = this;
-      $(document).on("click","span",function(){
-        //同カードの２回以上押下を無視する
-        if (this.className.indexOf("opened") != -1) return true;
-        //カードの数字を表示する
-        $(this).addClass("opened");
-        //カードのidを取得する
-        self.choicedId.push(this.id);
-        //choiceメソッドを実行
-        self.choice(this.id);
-      });
+      for (var i = 0; i < spans.length; i++) {
+        spans[i].addEventListener('click', function(){
+          //同カードの２回以上押下を無視する
+          if (this.className.indexOf("opened") != -1) return true;
+          //カードの数字を表示する
+          this.className = "opened";
+          //カードのidを取得する
+          self.choicedIds.push(this.id);
+          //choiceメソッドを実行
+          self.choice(this.id);
+        });
+      }
     };
     GameComponent.prototype.choice = function(id){
       //choiceTheSameSymbol.choiceを実行する
       var result = this.choiceTheSameSymbol.choice(id);
       //戻り値がfalse(pair不成立)のとき、かつ３枚目のカードクリック時に、直前の２枚を閉じる
-      if ( result === undefined && this.choicedId.length === 3 ){
-        this.symbolElement.close(this.choicedId[0]);
-        this.symbolElement.close(this.choicedId[1]);
-        this.choicedId.splice(0,2);
+      if ( result === undefined && this.choicedIds.length === 3 ){
+        this.symbolElements.close(this.choicedIds[0]);
+        this.symbolElements.close(this.choicedIds[1]);
+        this.choicedIds.splice(0,2);
         this.failedCountElement.innerHTML = this.choiceTheSameSymbol.failedCount;
       }
       //戻り値がtrue(pair成立)のとき
       if (result === true ){
-        this.choicedId = [];
+        this.choicedIds = [];
       };
     };
     var gameComponent = new GameComponent();
