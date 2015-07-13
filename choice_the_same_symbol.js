@@ -13,7 +13,7 @@ ChoiceTheSameSymbol.prototype.reset = function (pairsCount) {
 ChoiceTheSameSymbol.prototype.choice = function(id){
   var symbol = this.symbols.filter(function(sym){ return sym.id == id && sym.isAvailable })[0];
   // 選べないカードを指定した時
-  if (symbol == undefined)  return false;//this.showMessage("It's not available.")
+  if (symbol == undefined)  {this.showMessage("It's not available."); return false;};
   if (this.isFirst) {
     // 1回目
     this.pair.push(symbol);
@@ -21,17 +21,21 @@ ChoiceTheSameSymbol.prototype.choice = function(id){
   } else {
     // 2回目
     this.pair.push(symbol);
-    this.checkPair();
     this.isFirst = true;
+    return this.checkPair();
   }
 };
 ChoiceTheSameSymbol.prototype.checkPair = function(){
+  var result;
   if (this.isWin()) {
     this.win();
+    result = true;
   } else {
     this.lose();
+    result = false;
   }
-  return this.pair = [];
+  this.pair = [];
+  return result;
 };
 ChoiceTheSameSymbol.prototype.isWin = function() {
   return this.pair[0].value == this.pair[1].value;
@@ -42,6 +46,7 @@ ChoiceTheSameSymbol.prototype.win = function(){
   return this.showMessage('Good Choice!!');
 };
 ChoiceTheSameSymbol.prototype.lose = function(){
+  this.failedCount++;
   return this.showMessage('Bad!!');
 };
 ChoiceTheSameSymbol.prototype.isSymbolsAvailable = function(){

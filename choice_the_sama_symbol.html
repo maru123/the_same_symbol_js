@@ -24,7 +24,6 @@
       this.stage = document.getElementById("stage");
       this.choiceTheSameSymbol = new ChoiceTheSameSymbol();
       this.symbolElement = new SymbolElement(stage);
-
       document.getElementById('reset').addEventListener('click', this.reset.bind(this));
     };
     GameComponent.prototype.reset = function(){
@@ -32,15 +31,31 @@
       this.failedCountElement.innerHTML = 0;
       this.choiceTheSameSymbol.reset(this.entrySetCount.value);
       this.symbolElement.add(this.choiceTheSameSymbol.symbols);
-      this.choices = [];
+      this.choicedId = [];
       this.addEvent();
     };
     GameComponent.prototype.addEvent = function(){
       var self = this;
       $(document).on("click","span",function(){
+        //同カードの２回以上押下を無視する
         if (this.className.indexOf("opened") != -1) return true;
+        //カードの数字を表示する
         $(this).addClass("opened");
-        self.choiceTheSameSymbol.choice(this.id);
+        //カードのidを取得する
+        self.choicedId.push(this.id);
+        //choiceTheSameSymbol.choiceを実行する
+        var result = self.choiceTheSameSymbol.choice(this.id);
+        //choiceTheSameSymbol.choiceの戻り値がfalseのとき、カードを閉じる
+        if ( result === undefined && self.choicedId.length === 3 ){
+          self.symbolElement.close(self.choicedId[0]);
+          self.symbolElement.close(self.choicedId[1]);
+          self.choicedId.splice(0,2);
+          self.failedCountElement.innerHTML = self.choiceTheSameSymbol.failedCount;
+        }
+        //choiceTheSameSymbol.choiceの戻り値がtrueのとき
+        if (result === true ){
+          self.choicedId = [];
+        };
       });
     };
     var gameComponent = new GameComponent();
