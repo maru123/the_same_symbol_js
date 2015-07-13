@@ -75,7 +75,6 @@ ChoiceTheSameSymbol.prototype.shuffle = function () {
   }
   this.symbols = shuffledsymbols;
 };
-;
 
 var Symbol = function(id, value){
   this.id = id;

@@ -50,14 +50,14 @@
     GameComponent.prototype.choice = function(id){
       //choiceTheSameSymbol.choiceを実行する
       var result = this.choiceTheSameSymbol.choice(id);
-      //choiceTheSameSymbol.choiceの戻り値がfalse(pair不成立)のとき、カードを閉じる
+      //戻り値がfalse(pair不成立)のとき、かつ３枚目のカードクリック時に、直前の２枚を閉じる
       if ( result === undefined && this.choicedId.length === 3 ){
         this.symbolElement.close(this.choicedId[0]);
         this.symbolElement.close(this.choicedId[1]);
         this.choicedId.splice(0,2);
         this.failedCountElement.innerHTML = this.choiceTheSameSymbol.failedCount;
       }
-      //choiceTheSameSymbol.choiceの戻り値がtrue(pair成立)のとき
+      //戻り値がtrue(pair成立)のとき
       if (result === true ){
         this.choicedId = [];
       };
