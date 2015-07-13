@@ -11,6 +11,7 @@ ChoiceTheSameSymbol.prototype.reset = function (pairsCount) {
   this.shuffle();
 };
 ChoiceTheSameSymbol.prototype.choice = function(id){
+  console.log(id, this)
   var symbol = this.symbols.filter(function(sym){ return sym.id == id && sym.isAvailable })[0];
   // 選べないカードを指定した時
   if (symbol == undefined)  {this.showMessage("It's not available."); return false;};
@@ -87,23 +88,48 @@ Symbol.prototype.discard = function(){
 // ---------------------------------
 // SymbolElement
 // ---------------------------------
-var SymbolElement = function (stage) {
-  this.stage = stage;
-};
-SymbolElement.prototype.add = function(symbols){
-  for(var i = 0;  i < symbols.length; i++){
-    var spanElements = document.createElement("span");
-    spanElements.id = symbols[i].id;
-    spanElements.classList.add("closed");
-    spanElements.innerHTML = symbols[i].value;
-    this.stage.appendChild(spanElements);
-  }
-};
-SymbolElement.prototype.remove = function () {
+var SymbolElement = function(parent,symbol,callback){
+  this.parent = parent;
+  this.symbol = symbol;
+  this.callback = callback;
+  //this.remove();
+  this.add();
+  this.addEvent();
+}
+SymbolElement.prototype.add = function(){
+  this.spanElement = document.createElement("span");
+  this.spanElement.id = this.symbol.id;
+  this.spanElement.innerHTML = this.symbol.value;
+  this.spanElement.classList.add("closed");
+  this.parent.appendChild(this.spanElement);
+}
+SymbolElement.prototype.remove = function(){
   for(var i = this.stage.childNodes.length-1; i>=0; i--){
-    this.stage.removeChild(this.stage.childNodes[i]);
+    this.parent.removeChild(this.stage.childNodes[i]);
   }
 }
-SymbolElement.prototype.close = function(Id){
-  document.getElementById(Id).className = "closed";
+SymbolElement.prototype.addEvent = function(){
+  this.spanElement.addEventListener('click',function(){
+    this.callback(this.symbol.id);
+  }.bind(this));
 };
+// var SymbolElement = function (stage) {
+//   this.stage = stage;
+// };
+// SymbolElement.prototype.add = function(symbols){
+//   for(var i = 0;  i < symbols.length; i++){
+//     var spanElements = document.createElement("span");
+//     spanElements.id = symbols[i].id;
+//     spanElements.classList.add("closed");
+//     spanElements.innerHTML = symbols[i].value;
+//     this.stage.appendChild(spanElements);
+//   }
+// };
+// SymbolElement.prototype.remove = function () {
+//   for(var i = this.stage.childNodes.length-1; i>=0; i--){
+//     this.stage.removeChild(this.stage.childNodes[i]);
+//   }
+// }
+// SymbolElement.prototype.close = function(Id){
+//   document.getElementById(Id).className = "closed";
+// };
