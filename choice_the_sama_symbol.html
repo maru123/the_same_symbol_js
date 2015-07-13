@@ -43,24 +43,6 @@
         self.checkChoices(this.id,$(this).html());
       });
     };
-    GameComponent.prototype.checkChoices = function(id,value){
-      this.choices.push({index:id,symbol:value});
-
-      if(this.choices.length >= 2){
-        if(this.choices[0].symbol === this.choices[1].symbol){
-          this.choices.splice(0,2);
-        } else {
-          if(this.choices.length === 3){
-              this.symbolElement.close(this.choices[0].index);
-              this.symbolElement.close(this.choices[1].index);
-              this.choiceTheSameSymbol.failedCount++;
-              this.failedCountElement.innerHTML =this.choiceTheSameSymbol.failedCount++;
-              this.choices.splice(0,2);
-          }
-        };
-      };
-    };
-
     var gameComponent = new GameComponent();
     </script>
   </body>

@@ -13,7 +13,7 @@ ChoiceTheSameSymbol.prototype.reset = function (pairsCount) {
 ChoiceTheSameSymbol.prototype.choice = function(id){
   var symbol = this.symbols.filter(function(sym){ return sym.id == id && sym.isAvailable })[0];
   // 選べないカードを指定した時
-  if (symbol == undefined) return this.showMessage("It's not available.");
+  if (symbol == undefined)  return false;//this.showMessage("It's not available.")
 
   if (this.isFirst) {
     // 1回目
@@ -78,27 +78,26 @@ var Symbol = function(id, value){
 Symbol.prototype.discard = function(){
   this.isAvailable = false;
 };
-
 // ---------------------------------
 // SymbolElement
 // ---------------------------------
-// var SymbolElement = function (stage) {
-//   this.stage = stage;
-// };
-// SymbolElement.prototype.add = function(symbols){
-//   for(var i = 0;  i < symbols.length; i++){
-//     var spanElements = document.createElement("span");
-//     spanElements.id = "symbol"+i;
-//     spanElements.classList.add("closed");
-//     spanElements.innerHTML = symbols[i];
-//     this.stage.appendChild(spanElements);
-//   }
-// };
-// SymbolElement.prototype.remove = function () {
-//   for(var i = this.stage.childNodes.length-1; i>=0; i--){
-//     this.stage.removeChild(this.stage.childNodes[i]);
-//   }
-// }
-// SymbolElement.prototype.close = function(Id){
-//   document.getElementById(Id).className = "closed";
-// };
+var SymbolElement = function (stage) {
+  this.stage = stage;
+};
+SymbolElement.prototype.add = function(symbols){
+  for(var i = 0;  i < symbols.length; i++){
+    var spanElements = document.createElement("span");
+    spanElements.id = "symbol" + symbols[i].id;
+    spanElements.classList.add("closed");
+    spanElements.innerHTML = symbols[i].value;
+    this.stage.appendChild(spanElements);
+  }
+};
+SymbolElement.prototype.remove = function () {
+  for(var i = this.stage.childNodes.length-1; i>=0; i--){
+    this.stage.removeChild(this.stage.childNodes[i]);
+  }
+}
+SymbolElement.prototype.close = function(Id){
+  document.getElementById(Id).className = "closed";
+};
