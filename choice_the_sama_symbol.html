@@ -43,7 +43,7 @@
     };
     GameComponent.prototype.update = function(id){
       var symbolElement = this.findSymbolElement(id);
-      if (symbolElement.element.className === "closed") {
+      if (symbolElement.isClose()) {
         this.choicedIds.push(id);
         document.getElementById(id).className = "opened";
         var result = this.choiceTheSameSymbol.choice(id);

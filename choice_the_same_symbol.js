@@ -91,6 +91,7 @@ var SymbolElement = function(parent,symbol,callback){
   this.parent = parent;
   this.symbol = symbol;
   this.callback = callback;
+  this.status = "closed";
   this.add();
   this.addEvent();
 };
@@ -105,10 +106,15 @@ SymbolElement.prototype.remove = function(element){
   this.parent.removeChild(element);
 };
 SymbolElement.prototype.close = function(){
+  this.status == "closed";
   return this.element.className = "closed";
 };
 SymbolElement.prototype.open = function(){
+  this.status == "opened";
   return this.element.className = "opened";
+};
+SymbolElement.prototype.isClose = function(){
+  return this.status == "closed";
 };
 SymbolElement.prototype.addEvent = function(){
   this.element.addEventListener('click',function(){
