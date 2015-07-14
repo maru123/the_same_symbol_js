@@ -29,6 +29,7 @@
     GameComponent.prototype.reset = function(){
       this.failedCountElement.innerHTML = 0;
       this.choiceTheSameSymbol.reset(this.entrySetCount.value);
+      this.choicedIds = [];
       //Remove element
       for (var i = 0 ; i < this.symboleElements.length ; i++){
         var symbolElement = document.getElementById(this.symboleElements[i].symbol.id)
@@ -41,11 +42,10 @@
       }
     };
     GameComponent.prototype.check = function(id){
-      this.choicedIds.push(id);
       if (document.getElementById(id).className === "closed"){
+        this.choicedIds.push(id);
         document.getElementById(id).className = "opened";
         var result = this.choiceTheSameSymbol.choice(id);
-        console.log(result)
         //戻り値がfalse(pair不成立)のとき、かつ３枚目のカードクリック時に、直前の２枚を閉じる
         if ( result === "first" && this.choicedIds.length === 3 ){
           document.getElementById(this.choicedIds[0]).className = "closed";
