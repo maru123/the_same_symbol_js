@@ -23,64 +23,43 @@
       this.stage = document.getElementById("stage");
       this.choiceTheSameSymbol = new ChoiceTheSameSymbol();
       this.symboleElements = [];
+      this.choicedIds = [];
       document.getElementById('reset').addEventListener('click', this.reset.bind(this));
     };
     GameComponent.prototype.reset = function(){
       this.failedCountElement.innerHTML = 0;
       this.choiceTheSameSymbol.reset(this.entrySetCount.value);
+      //Remove element
+      for (var i = 0 ; i < this.symboleElements.length ; i++){
+        var symbolElement = document.getElementById(this.symboleElements[i].symbol.id)
+        this.symboleElements[i].remove(symbolElement);
+      }
+      this.symboleElements = [];
+      //Add element
       for (var i = 0 ; i < this.choiceTheSameSymbol.symbols.length ; i++){
-        this.symboleElements.push(new SymbolElement(this.stage,this.choiceTheSameSymbol.symbols[i],this.choiceTheSameSymbol.choice.bind(this.choiceTheSameSymbol)));
+        this.symboleElements.push(new SymbolElement(this.stage,this.choiceTheSameSymbol.symbols[i],this.check.bind(this)));
       }
     };
+    GameComponent.prototype.check = function(id){
+      this.choicedIds.push(id);
+      if (document.getElementById(id).className === "closed"){
+        document.getElementById(id).className = "opened";
+        var result = this.choiceTheSameSymbol.choice(id);
+        console.log(result)
+        //戻り値がfalse(pair不成立)のとき、かつ３枚目のカードクリック時に、直前の２枚を閉じる
+        if ( result === "first" && this.choicedIds.length === 3 ){
+          document.getElementById(this.choicedIds[0]).className = "closed";
+          document.getElementById(this.choicedIds[1]).className = "closed";
+          this.choicedIds.splice(0,2);
+          this.failedCountElement.innerHTML = this.choiceTheSameSymbol.failedCount;
+        }
+        //戻り値がtrue(pair成立)のとき
+        if (result === true ){
+          this.choicedIds = [];
+        };
+      };
+    };
     var gameComponent = new GameComponent();
-    // var GameComponent = function(){
-    //   this.entrySetCount = document.getElementById("entry-set-count")
-    //   this.failedCountElement = document.getElementById("failed-count");
-    //   this.stage = document.getElementById("stage");
-    //   this.choiceTheSameSymbol = new ChoiceTheSameSymbol();
-    //   this.symbolElement = new SymbolElement(stage);
-    //   document.getElementById('reset').addEventListener('click', this.reset.bind(this));
-    // };
-    // GameComponent.prototype.reset = function(){
-    //   this.symbolElement.remove();
-    //   this.failedCountElement.innerHTML = 0;
-    //   this.choiceTheSameSymbol.reset(this.entrySetCount.value);
-    //   this.symbolElement.add(this.choiceTheSameSymbol.symbols);
-    //   this.choicedIds = [];
-    //   this.addEvent();
-    // };
-    // GameComponent.prototype.addEvent = function(){
-    //   var spans = document.getElementsByClassName('closed');
-    //   var self = this;
-    //   for (var i = 0; i < spans.length; i++) {
-    //     spans[i].addEventListener('click', function(){
-    //       //同カードの２回以上押下を無視する
-    //       if (this.className.indexOf("opened") != -1) return true;
-    //       //カードの数字を表示する
-    //       this.className = "opened";
-    //       //カードのidを取得する
-    //       self.choicedIds.push(this.id);
-    //       //choiceメソッドを実行
-    //       self.choice(this.id);
-    //     });
-    //   }
-    // };
-    // GameComponent.prototype.choice = function(id){
-    //   //choiceTheSameSymbol.choiceを実行する
-    //   var result = this.choiceTheSameSymbol.choice(id);
-    //   //戻り値がfalse(pair不成立)のとき、かつ３枚目のカードクリック時に、直前の２枚を閉じる
-    //   if ( result === undefined && this.choicedIds.length === 3 ){
-    //     this.symbolElement.close(this.choicedIds[0]);
-    //     this.symbolElement.close(this.choicedIds[1]);
-    //     this.choicedIds.splice(0,2);
-    //     this.failedCountElement.innerHTML = this.choiceTheSameSymbol.failedCount;
-    //   }
-    //   //戻り値がtrue(pair成立)のとき
-    //   if (result === true ){
-    //     this.choicedIds = [];
-    //   };
-    // };
-    // var gameComponent = new GameComponent();
     </script>
   </body>
 </html>
