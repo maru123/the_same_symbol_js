@@ -22,7 +22,7 @@
       this.failedCountElement = document.getElementById("failed-count");
       this.stage = document.getElementById("stage");
       this.choiceTheSameSymbol = new ChoiceTheSameSymbol();
-      this.symboleElements = [];
+      this.symbolElements = [];
       this.choicedIds = [];
       document.getElementById('reset').addEventListener('click', this.reset.bind(this));
     };
@@ -31,18 +31,19 @@
       this.choiceTheSameSymbol.reset(this.entrySetCount.value);
       this.choicedIds = [];
       //Remove element
-      for (var i = 0 ; i < this.symboleElements.length ; i++){
-        var symbolElement = document.getElementById(this.symboleElements[i].symbol.id)
-        this.symboleElements[i].remove(symbolElement);
+      for (var i = 0 ; i < this.symbolElements.length ; i++){
+        var symbolElement = document.getElementById(this.symbolElements[i].symbol.id)
+        this.symbolElements[i].remove(symbolElement);
       }
-      this.symboleElements = [];
+      this.symbolElements = [];
       //Add element
       for (var i = 0 ; i < this.choiceTheSameSymbol.symbols.length ; i++){
-        this.symboleElements.push(new SymbolElement(this.stage,this.choiceTheSameSymbol.symbols[i],this.update.bind(this)));
+        this.symbolElements.push(new SymbolElement(this.stage,this.choiceTheSameSymbol.symbols[i],this.update.bind(this)));
       }
     };
     GameComponent.prototype.update = function(id){
-      if (document.getElementById(id).className === "closed"){
+      var symbolElement = this.findSymbolElement(id);
+      if (symbolElement.element.className === "closed") {
         this.choicedIds.push(id);
         document.getElementById(id).className = "opened";
         var result = this.choiceTheSameSymbol.choice(id);
@@ -58,6 +59,9 @@
           this.choicedIds = [];
         };
       };
+    };
+    GameComponent.prototype.findSymbolElement = function(id){
+      return this.symbolElements.filter(function(symboleElement){ return symboleElement.symbol.id == id})[0];
     };
     var gameComponent = new GameComponent();
     </script>
