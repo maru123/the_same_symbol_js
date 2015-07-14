@@ -42,6 +42,9 @@
       }
     };
     GameComponent.prototype.update = function(id){
+      // var symbols = this.choiceTheSameSymbols.symbols;
+      // x this.choicedIds
+
       var symbolElement = this.findSymbolElement(id);
       if (symbolElement.isClose()) {
         this.choicedIds.push(id);

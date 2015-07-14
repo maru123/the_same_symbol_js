@@ -18,11 +18,13 @@ ChoiceTheSameSymbol.prototype.choice = function(id){
     // 1回目
     this.pair.push(symbol);
     this.isFirst = false;
+    symbol.discard();
     return "first";
   } else {
     // 2回目
     this.pair.push(symbol);
     this.isFirst = true;
+    symbol.discard();
     return this.checkPair();
   }
 };
@@ -46,6 +48,7 @@ ChoiceTheSameSymbol.prototype.win = function(){
   return this.showMessage('Good Choice!!');
 };
 ChoiceTheSameSymbol.prototype.lose = function(){
+  this.revivePair();
   this.failedCount++;
   return this.showMessage('Bad!!');
 };
@@ -55,6 +58,11 @@ ChoiceTheSameSymbol.prototype.isSymbolsAvailable = function(){
 ChoiceTheSameSymbol.prototype.discardPair = function() {
   this.pair[0].discard();
   this.pair[1].discard();
+  return true;
+};
+ChoiceTheSameSymbol.prototype.revivePair = function() {
+  this.pair[0].revive();
+  this.pair[1].revive();
   return true;
 };
 ChoiceTheSameSymbol.prototype.clearPair = function() {
@@ -83,6 +91,9 @@ var Symbol = function(id, value){
 };
 Symbol.prototype.discard = function(){
   this.isAvailable = false;
+};
+Symbol.prototype.revive = function(){
+  this.isAvailable = true;
 };
 // ---------------------------------
 // SymbolElement
