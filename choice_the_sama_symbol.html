@@ -23,13 +23,11 @@
       this.stage = document.getElementById("stage");
       this.choiceTheSameSymbol = new ChoiceTheSameSymbol();
       this.symbolElements = [];
-      this.choicedIds = [];
       document.getElementById('reset').addEventListener('click', this.reset.bind(this));
     };
     GameComponent.prototype.reset = function(){
       this.failedCountElement.innerHTML = 0;
       this.choiceTheSameSymbol.reset(this.entrySetCount.value);
-      this.choicedIds = [];
       //Remove element
       for (var i = 0 ; i < this.symbolElements.length ; i++){
         var symbolElement = document.getElementById(this.symbolElements[i].symbol.id)
@@ -42,25 +40,19 @@
       }
     };
     GameComponent.prototype.update = function(id){
-      // var symbols = this.choiceTheSameSymbols.symbols;
-      // x this.choicedIds
-
       var symbolElement = this.findSymbolElement(id);
       if (symbolElement.isClose()) {
-        this.choicedIds.push(id);
         symbolElement.open();
         var result = this.choiceTheSameSymbol.choice(id);
-        //戻り値がfalse(pair不成立)のとき、かつ３枚目のカードクリック時に、直前の２枚を閉じる
-        if ( result === "first" && this.choicedIds.length === 3 ){
-          this.findSymbolElement(this.choicedIds[0]).close();
-          this.findSymbolElement(this.choicedIds[1]).close();
-          this.choicedIds.splice(0,2);
+        if ( result === "first"){
+          var availableSymbols = this.choiceTheSameSymbol.symbols.filter(function(symbol){ return symbol.isAvailable == true});
+          for(var i = 0 ; i < availableSymbols.length ; i++){
+            this.symbolElements.filter(function(symboleElement){
+              return symboleElement.symbol.id == availableSymbols[i].id
+            })[0].close();
+          };
           this.failedCountElement.innerHTML = this.choiceTheSameSymbol.failedCount;
         }
-        //戻り値がtrue(pair成立)のとき
-        if (result === true ){
-          this.choicedIds = [];
-        };
       };
     };
     GameComponent.prototype.findSymbolElement = function(id){
