@@ -95,17 +95,23 @@ var SymbolElement = function(parent,symbol,callback){
   this.addEvent();
 };
 SymbolElement.prototype.add = function(){
-  this.spanElement = document.createElement("span");
-  this.spanElement.id = this.symbol.id;
-  this.spanElement.innerHTML = this.symbol.value;
-  this.spanElement.classList.add("closed");
-  this.parent.appendChild(this.spanElement);
+  this.element = document.createElement("span");
+  this.element.id = this.symbol.id;
+  this.element.innerHTML = this.symbol.value;
+  this.close();
+  this.parent.appendChild(this.element);
 };
 SymbolElement.prototype.remove = function(element){
   this.parent.removeChild(element);
 };
+SymbolElement.prototype.close = function(){
+  return this.element.className = "closed";
+};
+SymbolElement.prototype.open = function(){
+  return this.element.className = "opened";
+};
 SymbolElement.prototype.addEvent = function(){
-  this.spanElement.addEventListener('click',function(){
+  this.element.addEventListener('click',function(){
     this.callback(this.symbol.id);
   }.bind(this));
 };

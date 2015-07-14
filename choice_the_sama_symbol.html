@@ -38,10 +38,10 @@
       this.symboleElements = [];
       //Add element
       for (var i = 0 ; i < this.choiceTheSameSymbol.symbols.length ; i++){
-        this.symboleElements.push(new SymbolElement(this.stage,this.choiceTheSameSymbol.symbols[i],this.check.bind(this)));
+        this.symboleElements.push(new SymbolElement(this.stage,this.choiceTheSameSymbol.symbols[i],this.update.bind(this)));
       }
     };
-    GameComponent.prototype.check = function(id){
+    GameComponent.prototype.update = function(id){
       if (document.getElementById(id).className === "closed"){
         this.choicedIds.push(id);
         document.getElementById(id).className = "opened";
