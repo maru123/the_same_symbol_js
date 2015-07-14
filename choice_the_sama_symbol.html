@@ -45,12 +45,12 @@
       var symbolElement = this.findSymbolElement(id);
       if (symbolElement.isClose()) {
         this.choicedIds.push(id);
-        document.getElementById(id).className = "opened";
+        symbolElement.open();
         var result = this.choiceTheSameSymbol.choice(id);
         //戻り値がfalse(pair不成立)のとき、かつ３枚目のカードクリック時に、直前の２枚を閉じる
         if ( result === "first" && this.choicedIds.length === 3 ){
-          document.getElementById(this.choicedIds[0]).className = "closed";
-          document.getElementById(this.choicedIds[1]).className = "closed";
+          this.findSymbolElement(this.choicedIds[0]).close();
+          this.findSymbolElement(this.choicedIds[1]).close();
           this.choicedIds.splice(0,2);
           this.failedCountElement.innerHTML = this.choiceTheSameSymbol.failedCount;
         }
